@@ -1,0 +1,13 @@
+"use client";
+
+import { FormEvent, useEffect, useState } from "react";
+
+type Media = { id:number; title:string; file_name:string; mime_type:string; url:string };
+
+export default function WorksUploadAdmin() {
+  const [items, setItems] = useState<Media[]>([]); const [file, setFile] = useState<File | null>(null); const [title, setTitle] = useState(""); const [message, setMessage] = useState(""); const [uploading, setUploading] = useState(false);
+  async function load() { const r = await fetch("/api/media"); const d = await r.json(); if (r.ok) setItems(d); else setMessage(d.error || "Could not load works."); }
+  useEffect(() => { load(); }, []);
+  async function upload(e: FormEvent) { e.preventDefault(); if (!file) return setMessage("Please choose a video or photo."); setUploading(true); setMessage("Uploading…"); try { const form = new FormData(); form.append("file", file); form.append("title", title); const r = await fetch("/api/media", { method:"POST", body:form }); const d = await r.json(); if (!r.ok) throw new Error(d.error || "Upload failed."); setTitle(""); setFile(null); const input = document.getElementById("work-file") as HTMLInputElement|null; if(input) input.value=""; setMessage("Uploaded and visible on the public Works page."); await load(); } catch(e) { setMessage(e instanceof Error ? e.message : "Upload failed."); } finally { setUploading(false); } }
+  return <main className="simple-admin"><header className="simple-admin-header"><div><p>STORYCREATEEDITOR</p><h1>Works</h1></div><a href="/admin">Back to Admin</a></header><section className="simple-admin-content"><h2>Select &amp; upload</h2><p className="simple-admin-intro">Choose a video or photo, add a title, and press Upload. It is saved in the database and appears on the website.</p><form className="simple-upload-form" onSubmit={upload}><label>Title<input value={title} onChange={e=>setTitle(e.target.value)} placeholder="Wedding Story" /></label><label>Select video / photo<input id="work-file" type="file" accept="video/*,image/*" onChange={e=>setFile(e.target.files?.[0] || null)} required /></label><button className="simple-admin-save" disabled={uploading}>{uploading ? "Uploading…" : "Upload"}</button>{message && <p>{message}</p>}</form><h2 className="simple-section-heading">Current works</h2><div className="simple-work-list">{items.map(item=><article className="simple-work-card" key={item.id}><div><strong>{item.title}</strong><span>{item.file_name}</span></div>{item.mime_type.startsWith("video/") ? <video src={item.url} controls playsInline preload="metadata" /> : <img src={item.url} alt={item.title} />}</article>)}</div></section></main>;
+}
