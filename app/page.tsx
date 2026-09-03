@@ -1,54 +1,83 @@
-const films = [
-  { title: "A Story Worth Remembering", meta: "Wedding Film · Cinematic", className: "film-one" },
-  { title: "Two Families, One Frame", meta: "Wedding Film · Emotional", className: "film-two" },
-  { title: "The Celebration Begins", meta: "Same-Day Edit · Reel", className: "film-three" },
+const featuredWorks = [
+  { no: "01", title: "The First Look", meta: "Wedding Film · Indore", tone: "rose" },
+  { no: "02", title: "A Day To Remember", meta: "Wedding Film · Mandsaur", tone: "gold" },
+  { no: "03", title: "After The Vows", meta: "Same-Day Edit · Neemuch", tone: "violet" },
 ];
-
-const services = ["Wedding Films", "Wedding Reels", "Same-Day Edits", "Pre-Wedding Films", "Event Films", "Creator Editing"];
 
 export default function Home() {
   return (
-    <main>
-      <nav className="nav container">
-        <a className="brand" href="#top">STORY<span>CREATE</span>EDITOR</a>
+    <main className="site-shell">
+      <nav className="site-nav container">
+        <a className="brand" href="/">STORY<span>CREATE</span>EDITOR</a>
         <div className="nav-links">
-          <a href="#films">Films</a><a href="#services">Services</a><a href="#about">About</a>
-          <a className="nav-cta" href="#contact">Book Your Date</a>
+          <a href="/works">Works</a>
+          <a href="/about">About</a>
+          <a className="nav-cta" href="/book">Book your date <span>↗</span></a>
         </div>
       </nav>
 
-      <section className="hero" id="top">
-        <div className="hero-overlay" />
+      <section className="hero-3d" id="top">
+        <div className="hero-glow hero-glow-one" />
+        <div className="hero-glow hero-glow-two" />
+        <div className="hero-orbit orbit-one" />
+        <div className="hero-orbit orbit-two" />
         <div className="hero-content container">
-          <p className="eyebrow">WEDDING FILMS · REELS · EDITING</p>
-          <h1>Your story.<br /><em>Told like a film.</em></h1>
-          <p className="hero-copy">Cinematic wedding stories built from real moments, honest reactions and the energy that makes your celebration yours.</p>
-          <div className="actions">
-            <a className="button button-light" href="#films">Watch Films <span>↗</span></a>
-            <a className="text-link" href="#contact">Let&apos;s create your story <span>→</span></a>
+          <div className="hero-copy-block">
+            <p className="eyebrow">WEDDING FILMS · REELS · SAME-DAY EDITS</p>
+            <h1>Make it feel<br /><em>like a movie.</em></h1>
+            <p className="hero-copy">Cinematic wedding stories for couples who want to remember the feeling, not just the footage.</p>
+            <div className="actions">
+              <a className="button button-accent" href="/works">Explore the work <span>↗</span></a>
+              <a className="text-link" href="/book">Check your date <span>→</span></a>
+            </div>
+          </div>
+          <div className="hero-card-stack" aria-hidden="true">
+            <div className="floating-card card-back"><span>FRAME 03</span></div>
+            <div className="floating-card card-mid"><span>FRAME 02</span></div>
+            <div className="floating-card card-front"><span>FRAME 01</span><strong>YOUR<br />STORY</strong><small>cinematic / 2026</small></div>
           </div>
         </div>
-        <div className="hero-meta"><span>INDIA · WORLDWIDE</span><span>SCROLL ↓</span></div>
+        <div className="hero-bottom container"><span>INDIA · WORLDWIDE</span><span>SCROLL TO EXPLORE ↓</span></div>
       </section>
 
-      <section className="statement container">
-        <p className="eyebrow">THE APPROACH</p>
-        <div><h2>Not just coverage.<br /><em>A story you can feel.</em></h2><p className="section-copy">From the quiet seconds before the ceremony to the chaos on the dance floor, every frame is shaped to preserve how the day actually felt.</p></div>
-      </section>
-
-      <section className="films container" id="films">
-        <div className="section-head"><div><p className="eyebrow">SELECTED STORIES</p><h2>Recent <em>films</em></h2></div><a className="text-link dark" href="/films">View all stories →</a></div>
-        <div className="film-grid">
-          {films.map((film, i) => <a className={`film-card ${film.className}`} href="/films" key={film.title}><span className="film-number">0{i + 1}</span><div className="film-card-bottom"><p>{film.meta}</p><h3>{film.title}</h3></div><span className="play">▶</span></a>)}
+      <section className="intro-section container">
+        <div className="section-label"><span>01</span><span>THE IDEA</span></div>
+        <div className="intro-grid">
+          <h2>Not a wedding video.<br /><em>A memory with a pulse.</em></h2>
+          <p>We turn real moments into films that have rhythm, atmosphere and personality. The nervous laugh, the quiet look, the wild dance floor — all the little things that make your day yours.</p>
         </div>
       </section>
 
-      <section className="services" id="services"><div className="container"><p className="eyebrow">WHAT WE CREATE</p><div className="services-layout"><h2>Built around<br /><em>your story.</em></h2><div className="service-list">{services.map((service, i) => <a className="service-row" href="#contact" key={service}><span>0{i + 1}</span><strong>{service}</strong><span>↗</span></a>)}</div></div></div></section>
+      <section className="works-preview container">
+        <div className="section-heading">
+          <div><p className="eyebrow dark-eyebrow">02 · SELECTED WORKS</p><h2>Stories we&apos;ve <em>made.</em></h2></div>
+          <a className="text-link dark" href="/works">View all works →</a>
+        </div>
+        <div className="work-stage">
+          {featuredWorks.map((work, index) => (
+            <a href="/works" className={`work-tile work-${work.tone}`} key={work.title}>
+              <span className="work-no">{work.no}</span>
+              <span className="work-play">▶</span>
+              <div className="work-info"><small>{work.meta}</small><h3>{work.title}</h3></div>
+              <span className={`depth-ring ring-${index + 1}`} />
+            </a>
+          ))}
+        </div>
+      </section>
 
-      <section className="about container" id="about"><div><p className="eyebrow">THE PERSON BEHIND THE EDIT</p><h2>Every wedding has<br /><em>its own rhythm.</em></h2></div><div className="about-copy"><p>StoryCreateEditor is built around one idea: your wedding film should feel like <em>you</em>, not a template.</p><p>We chase the in-between moments, the honest reactions and the details that become your favourite memories.</p><a className="text-link dark" href="#contact">Meet the creator →</a></div></section>
+      <section className="booking-banner">
+        <div className="container booking-banner-inner">
+          <div><p className="eyebrow">03 · YOUR DATE</p><h2>Got a date?<br /><em>Let&apos;s make it a story.</em></h2></div>
+          <div className="booking-side"><p>Tell us your dates, location and what you&apos;re dreaming of. The enquiry takes a couple of minutes.</p><a className="button button-light" href="/book">Start booking enquiry <span>↗</span></a></div>
+        </div>
+      </section>
 
-      <section className="contact" id="contact"><div className="container contact-inner"><p className="eyebrow">LET&apos;S MAKE SOMETHING MEANINGFUL</p><h2>Your date.<br /><em>Your people. Your film.</em></h2><p>Tell us about your wedding, your dates and the story you want to remember.</p><a className="button button-light" href="/book">Start an enquiry <span>↗</span></a></div></section>
-      <footer className="footer container"><span>© 2026 STORYCREATEEDITOR</span><span>CINEMATIC WEDDING STORIES · WEDDING FILMS · REELS</span></footer>
+      <section className="about-strip container">
+        <div className="section-label"><span>04</span><span>ABOUT</span></div>
+        <div className="about-strip-content"><h2>One creator.<br /><em>One story at a time.</em></h2><div><p>StoryCreateEditor is a wedding-film and editing studio focused on honest, cinematic storytelling and fast, social-first edits.</p><a className="text-link dark" href="/about">Meet the creator →</a></div></div>
+      </section>
+
+      <footer className="site-footer container"><a className="brand" href="/">STORY<span>CREATE</span>EDITOR</a><span>WEDDING FILMS · REELS · EDITING</span><a href="/book">BOOK YOUR DATE ↗</a></footer>
     </main>
   );
 }
