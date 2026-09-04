@@ -9,6 +9,15 @@ async function tokenFor(password: string, secret: string) {
 }
 
 export async function middleware(request: NextRequest) {
+  // On Vercel, keep PostgreSQL private on Render. Proxy every API request to
+  // the Render app, which is the trusted database/API host. The browser still
+  // sees /api/* on the Vercel domain, so the existing frontend needs no changes.
+  const backend = process.env.RENDER_BACKEND_URL?.replace(/\/$/, "");
+  if (backend && request.nextUrl.pathname.startsWith("/api/")) {
+    const target = new URL(`${backend}${request.nextUrl.pathname}${request.nextUrl.search}`);
+    return NextResponse.rewrite(target);
+  }
+
   if (!request.nextUrl.pathname.startsWith("/admin") || request.nextUrl.pathname.startsWith("/admin/login")) return NextResponse.next();
 
   const password = process.env.ADMIN_PASSWORD;
@@ -24,5 +33,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: ["/api/:path*", "/admin/:path*"],
 };
